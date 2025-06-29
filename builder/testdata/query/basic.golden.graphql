@@ -1,0 +1,4 @@
+query user {
+  user_id: id
+  name(age: 30, var: $var, sex: Sex, status: UserStatus = "active")
+}

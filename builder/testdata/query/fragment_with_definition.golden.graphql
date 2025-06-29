@@ -1,0 +1,8 @@
+fragment Hello on Character {
+  id
+  name(age: 30)
+}
+query foo {
+  status
+  ... Hello
+}

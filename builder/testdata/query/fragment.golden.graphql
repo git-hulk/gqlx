@@ -1,0 +1,7 @@
+query foo {
+  id
+  ... named_fragment
+... on inline_fragment {
+    bar
+  }
+}
