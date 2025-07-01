@@ -1,6 +1,10 @@
 package builder
 
-import "strings"
+import (
+	"strings"
+
+	"github.com/git-hulk/gqlx/builder/value"
+)
 
 type DataType string
 
@@ -10,19 +14,17 @@ type Argument interface {
 }
 
 type valueArgument struct {
-	name       string
-	val        *Value
-	valType    DataType
-	defaultVal *Value // Optional default value for the argument
+	name string
+	val  *value.Value
 }
 
 type typedArgument struct {
 	name       string
 	valType    DataType
-	defaultVal *Value // Optional default value for the argument
+	defaultVal *value.Value // Optional default value for the argument
 }
 
-func FromValue(name string, val *Value) *valueArgument {
+func FromValue(name string, val *value.Value) *valueArgument {
 	return &valueArgument{
 		name: name,
 		val:  val,
@@ -37,7 +39,7 @@ func (a *valueArgument) IsValue() bool {
 	return true
 }
 
-func FromType(name string, valType DataType, val *Value) *typedArgument {
+func FromType(name string, valType DataType, val *value.Value) *typedArgument {
 	return &typedArgument{
 		name:       name,
 		valType:    valType,

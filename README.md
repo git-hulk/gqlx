@@ -8,7 +8,6 @@ NOTICE: this library is still in development and may change in the future.
 ## How to use
 
 ```Go
-builder := builder.New()
 query := builder.Query().Name("user").
     AddSelections(
         NewField("id").Alias("user_id"),

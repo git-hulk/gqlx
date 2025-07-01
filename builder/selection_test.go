@@ -3,6 +3,8 @@ package builder
 import (
 	"testing"
 
+	"github.com/git-hulk/gqlx/builder/value"
+
 	"github.com/stretchr/testify/require"
 )
 
@@ -21,7 +23,7 @@ func TestSelection_Field(t *testing.T) {
 			Selection: &Field{
 				name: "user",
 				args: []Argument{
-					FromValue("id", String("123")),
+					FromValue("id", value.String("123")),
 				},
 			},
 			GQL: "user(id: \"123\")\n",
@@ -32,11 +34,11 @@ func TestSelection_Field(t *testing.T) {
 				name: "age",
 				directives: []*Directive{
 					{name: "include", args: []Argument{
-						FromValue("if", Boolean(true)),
+						FromValue("if", value.Boolean(true)),
 					}},
 				},
 				args: []Argument{
-					FromValue("id", String("123")),
+					FromValue("id", value.String("123")),
 				},
 			},
 			GQL: "age(id: \"123\") @include(if: true)\n",

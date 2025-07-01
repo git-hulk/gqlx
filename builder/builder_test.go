@@ -3,6 +3,8 @@ package builder
 import (
 	"testing"
 
+	"github.com/git-hulk/gqlx/builder/value"
+
 	"github.com/sebdah/goldie/v2"
 )
 
@@ -16,10 +18,10 @@ func TestBuilder_Query(t *testing.T) {
 				AddSelections(
 					NewField("id").Alias("user_id"),
 					NewField("name").AddArguments(
-						FromValue("age", Int(30)),
-						FromValue("var", Variable("var")),
+						FromValue("age", value.Int(30)),
+						FromValue("var", value.Variable("var")),
 						FromType("sex", "Sex", nil),
-						FromType("status", "UserStatus", String("active")),
+						FromType("status", "UserStatus", value.String("active")),
 					),
 				),
 			Snapshot: "basic",
@@ -38,7 +40,7 @@ func TestBuilder_Query(t *testing.T) {
 			Query: Query().Name("foo").
 				DeclareFragment("Hello", "Character", Selections{
 					NewField("id"),
-					NewField("name").AddArguments(FromValue("age", Int(30))),
+					NewField("name").AddArguments(FromValue("age", value.Int(30))),
 				}).
 				AddSelections(
 					NewField("status"),
@@ -79,13 +81,13 @@ func TestBuilder_Mutation(t *testing.T) {
 		// Multiple fields in mutation
 		{
 			Mutation: Mutation().Name("deleteStarship").AddArguments(
-				FromType("id", "ID!", String("3001")),
+				FromType("id", "ID!", value.String("3001")),
 			).AddSelections(
 				NewField("firstShip").Alias("first_ship").AddArguments(
-					FromValue("id", String("3001")),
+					FromValue("id", value.String("3001")),
 				),
 				NewField("secondShip").Alias("second_ship").AddArguments(
-					FromValue("id", String("3002")),
+					FromValue("id", value.String("3002")),
 				),
 			),
 			Snapshot: "multiple_fields",
@@ -97,8 +99,8 @@ func TestBuilder_Mutation(t *testing.T) {
 				FromType("review", "ReviewInput", nil),
 			).AddSelections(
 				NewField("createReview").AddArguments(
-					FromValue("episode", Variable("ep")),
-					FromValue("review", Variable("review")),
+					FromValue("episode", value.Variable("ep")),
+					FromValue("review", value.Variable("review")),
 				).AddSelections(
 					NewField("stars"),
 					NewField("commentary"),
