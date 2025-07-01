@@ -8,15 +8,15 @@ import (
 type ValueKind int
 
 const (
-	ValueKindNull ValueKind = iota + 1
-	ValueKindString
-	ValueKindInt
-	ValueKindFloat
-	ValueKindBoolean
-	ValueKindEnum
-	ValueKindList
-	ValueKindObject
-	ValueKindVariable
+	kindNull ValueKind = iota + 1
+	kindString
+	kindInt
+	kindFloat
+	kindBoolean
+	kindEnum
+	kindList
+	kindObject
+	kindVariable
 )
 
 type Value struct {
@@ -30,20 +30,20 @@ func (v *Value) Kind() ValueKind {
 
 func (v *Value) String() string {
 	switch v.kind {
-	case ValueKindNull:
+	case kindNull:
 		return "null"
-	case ValueKindString:
+	case kindString:
 		return "\"" + v.val.(string) + "\""
-	case ValueKindInt, ValueKindFloat:
+	case kindInt, kindFloat:
 		return fmt.Sprintf("%v", v.val)
-	case ValueKindBoolean:
+	case kindBoolean:
 		if v.val.(bool) {
 			return "true"
 		}
 		return "false"
-	case ValueKindEnum:
+	case kindEnum:
 		return v.val.(string)
-	case ValueKindList:
+	case kindList:
 		list := v.val.([]*Value)
 		var b strings.Builder
 		b.WriteString("[")
@@ -55,7 +55,7 @@ func (v *Value) String() string {
 		}
 		b.WriteString("]")
 		return b.String()
-	case ValueKindObject:
+	case kindObject:
 		obj := v.val.(map[string]*Value)
 		var b strings.Builder
 		b.WriteString("{")
@@ -66,7 +66,7 @@ func (v *Value) String() string {
 		b.WriteString(strings.Join(tmp, ", "))
 		b.WriteString("}")
 		return b.String()
-	case ValueKindVariable:
+	case kindVariable:
 		return "$" + v.val.(string)
 	default:
 		return ""
@@ -74,37 +74,37 @@ func (v *Value) String() string {
 }
 
 func Null() *Value {
-	return &Value{kind: ValueKindNull, val: nil}
+	return &Value{kind: kindNull, val: nil}
 }
 
 func String(val string) *Value {
-	return &Value{kind: ValueKindString, val: val}
+	return &Value{kind: kindString, val: val}
 }
 
 func Int(val int) *Value {
-	return &Value{kind: ValueKindInt, val: val}
+	return &Value{kind: kindInt, val: val}
 }
 
 func Float(val float64) *Value {
-	return &Value{kind: ValueKindFloat, val: val}
+	return &Value{kind: kindFloat, val: val}
 }
 
 func Boolean(val bool) *Value {
-	return &Value{kind: ValueKindBoolean, val: val}
+	return &Value{kind: kindBoolean, val: val}
 }
 
 func Enum(val string) *Value {
-	return &Value{kind: ValueKindEnum, val: val}
+	return &Value{kind: kindEnum, val: val}
 }
 
 func List(values ...*Value) *Value {
-	return &Value{kind: ValueKindList, val: values}
+	return &Value{kind: kindList, val: values}
 }
 
 func Object(values map[string]*Value) *Value {
-	return &Value{kind: ValueKindObject, val: values}
+	return &Value{kind: kindObject, val: values}
 }
 
 func Variable(name string) *Value {
-	return &Value{kind: ValueKindVariable, val: name}
+	return &Value{kind: kindVariable, val: name}
 }
