@@ -87,6 +87,7 @@ func (fragment *Fragment) Format(f *Formatter) {
 		f.WriteIndent()
 		f.WriteString("... ").WriteString(fragment.name).NewLine()
 	} else {
+		f.WriteIndent()
 		f.WriteString("...").
 			WriteString(" on ").WriteString(fragment.on).
 			WriteString(" {").NewLine()

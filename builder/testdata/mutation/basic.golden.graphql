@@ -1,0 +1,4 @@
+mutation rateFilm(episode: Episode, rating: Rating) {
+  episode
+  viewerRating
+}

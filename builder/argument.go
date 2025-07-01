@@ -4,41 +4,48 @@ import "strings"
 
 type DataType string
 
-type Argument struct {
+type Argument interface {
+	IsValue() bool
+	String() string
+}
+
+type valueArgument struct {
 	name       string
 	val        *Value
 	valType    DataType
 	defaultVal *Value // Optional default value for the argument
 }
 
-func ValueArgument(name string, val *Value) *Argument {
-	return &Argument{
+type typedArgument struct {
+	name       string
+	valType    DataType
+	defaultVal *Value // Optional default value for the argument
+}
+
+func FromValue(name string, val *Value) *valueArgument {
+	return &valueArgument{
 		name: name,
 		val:  val,
 	}
 }
 
-func TypedArgument(name string, valType DataType, val *Value) *Argument {
-	return &Argument{
+func (a *valueArgument) String() string {
+	return a.name + ": " + a.val.String()
+}
+
+func (a *valueArgument) IsValue() bool {
+	return true
+}
+
+func FromType(name string, valType DataType, val *Value) *typedArgument {
+	return &typedArgument{
 		name:       name,
 		valType:    valType,
 		defaultVal: val,
 	}
 }
 
-func declaredVarArgument(name string, valType DataType, val *Value) *Argument {
-	return &Argument{
-		name:       "$" + name,
-		valType:    valType,
-		defaultVal: val, // No default value for declared variables
-	}
-}
-
-func (a *Argument) String() string {
-	if a.val != nil {
-		return a.name + ": " + a.val.String()
-	}
-
+func (a *typedArgument) String() string {
 	result := a.name + ": " + string(a.valType)
 	if a.defaultVal != nil {
 		result += " = " + a.defaultVal.String()
@@ -46,9 +53,13 @@ func (a *Argument) String() string {
 	return result
 }
 
-type Arguments []*Argument
+func (a *typedArgument) IsValue() bool {
+	return false
+}
 
-func (a *Arguments) Add(args ...*Argument) {
+type Arguments []Argument
+
+func (a *Arguments) Add(args ...Argument) {
 	*a = append(*a, args...)
 }
 

@@ -17,6 +17,7 @@ type Field struct {
 	args       Arguments
 	directives Directives
 	alias      string // Optional alias for the field
+	selections Selections
 }
 
 func NewField(name string) *Field {
@@ -32,13 +33,18 @@ func (field *Field) Alias(alias string) *Field {
 	return field
 }
 
-func (field *Field) AddArguments(args ...*Argument) *Field {
+func (field *Field) AddArguments(args ...Argument) *Field {
 	field.args.Add(args...)
 	return field
 }
 
 func (field *Field) AddDirectives(directives ...*Directive) *Field {
 	field.directives = append(field.directives, directives...)
+	return field
+}
+
+func (field *Field) AddSelections(selections ...Selection) *Field {
+	field.selections.Add(selections...)
 	return field
 }
 
@@ -53,6 +59,17 @@ func (field Field) Format(f *Formatter) {
 	}
 	f.WriteString(field.name).
 		WriteString(field.args.String()).
-		WriteString(field.directives.String()).
-		NewLine()
+		WriteString(field.directives.String())
+
+	if len(field.selections) > 0 {
+		f.WriteString(" {").NewLine()
+		f.IncreaseLevel()
+		for _, selection := range field.selections {
+			selection.Format(f)
+		}
+		f.DecreaseLevel()
+		f.WriteIndent().WriteString("}").NewLine()
+	} else {
+		f.NewLine()
+	}
 }

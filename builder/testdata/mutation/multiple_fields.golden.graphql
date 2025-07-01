@@ -1,0 +1,4 @@
+mutation deleteStarship(id: ID! = "3001") {
+  first_ship: firstShip(id: "3001")
+  second_ship: secondShip(id: "3002")
+}

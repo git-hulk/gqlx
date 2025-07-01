@@ -13,10 +13,10 @@ query := builder.Query().Name("user").
     AddSelections(
         NewField("id").Alias("user_id"),
         NewField("name").AddArguments(
-            ValueArgument("age", Int(30)),
-            ValueArgument("var", Variable("var")),
-            TypedArgument("sex", "Sex", nil),
-            TypedArgument("status", "UserStatus", String("active")),
+            FromValue("age", Int(30)),
+            FromValue("var", Variable("var")),
+            FromValue("sex", "Sex", nil),
+            FromValue("status", "UserStatus", String("active")),
         ),
     )
 

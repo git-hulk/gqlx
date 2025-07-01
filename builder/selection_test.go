@@ -20,8 +20,8 @@ func TestSelection_Field(t *testing.T) {
 			// with field name and arguments
 			Selection: &Field{
 				name: "user",
-				args: []*Argument{
-					ValueArgument("id", String("123")),
+				args: []Argument{
+					FromValue("id", String("123")),
 				},
 			},
 			GQL: "user(id: \"123\")\n",
@@ -31,12 +31,12 @@ func TestSelection_Field(t *testing.T) {
 			Selection: &Field{
 				name: "age",
 				directives: []*Directive{
-					{name: "include", args: []*Argument{
-						ValueArgument("if", Boolean(true)),
+					{name: "include", args: []Argument{
+						FromValue("if", Boolean(true)),
 					}},
 				},
-				args: []*Argument{
-					ValueArgument("id", String("123")),
+				args: []Argument{
+					FromValue("id", String("123")),
 				},
 			},
 			GQL: "age(id: \"123\") @include(if: true)\n",
