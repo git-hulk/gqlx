@@ -7,6 +7,8 @@ NOTICE: this library is still in development and may change in the future.
 
 ## How to use
 
+### Query Example
+
 ```Go
 query := builder.Query().Name("user").
     AddSelections(
@@ -24,6 +26,31 @@ query := builder.Query().Name("user").
 //    name(age: 30, var: $var, sex: Sex, status: UserStatus = "active")
 // }
 queryString := query.String()
+```
+
+### Mutation Example
+
+```Go
+mutation := builder.Mutation().Name("CreateReviewForEpisode").AddArguments(
+    FromType("ep", "Episode", nil),
+    FromType("review", "ReviewInput", nil),
+).AddSelections(
+    NewField("createReview").AddArguments(
+        FromValue("episode", value.Variable("ep")),
+        FromValue("review", value.Variable("review")),
+    ).AddSelections(
+        NewField("stars"),
+        NewField("commentary"),
+    ),
+)
+
+// mutation CreateReviewForEpisode(ep: Episode, review: ReviewInput) {
+//   createReview(episode: $ep, review: $review) {
+//     stars
+//     commentary
+//   }
+// }
+mutationString := mutation.String()
 ```
 
 ## License
