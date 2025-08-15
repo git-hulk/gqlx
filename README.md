@@ -7,6 +7,7 @@ NOTICE: this library is still in development and may change in the future.
 
 ## How to use
 
+### Build Query Request
 ```Go
 query := builder.Query().Name("user").
     AddSelections(
@@ -25,7 +26,9 @@ query := builder.Query().Name("user").
 // }
 queryString := query.String()
 ```
+### Build Mutation Request
 
 ## License
 
 This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details.
+
